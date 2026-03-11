@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Wrench,
   Logs,
@@ -21,6 +21,15 @@ import Inventory, { InventoryItem } from "@/components/game/Inventory";
 import Crafting, { CraftingRecipe } from "@/components/game/Crafting";
 
 export default function Game() {
+  // Get setup config from session storage
+  const gameSetup = useMemo(() => {
+    try {
+      const stored = sessionStorage.getItem("gameSetup");
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  }, []);
   // Sample inventory items
   const [inventoryItems] = useState<InventoryItem[]>([
     {
@@ -155,6 +164,7 @@ export default function Game() {
   return (
     <GameLayout
       header={<Header stats={stats} />}
+      shopName={gameSetup?.shopName || "RUST SHOP"}
     >
       <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
         {/* Left side - Inventory */}

@@ -5,9 +5,10 @@ import { ChevronLeft, Settings, Sword } from "lucide-react";
 interface GameLayoutProps {
   children: ReactNode;
   header: ReactNode;
+  shopName?: string;
 }
 
-export default function GameLayout({ children, header }: GameLayoutProps) {
+export default function GameLayout({ children, header, shopName = "RUST SHOP" }: GameLayoutProps) {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col overflow-hidden">
       {/* Top navigation bar */}
@@ -22,7 +23,7 @@ export default function GameLayout({ children, header }: GameLayoutProps) {
 
         <div className="flex items-center gap-2">
           <Sword className="w-5 h-5 text-rust-400" />
-          <h2 className="text-lg font-bold text-rust-400">RUST SHOP</h2>
+          <h2 className="text-lg font-bold text-rust-400">{shopName.toUpperCase()}</h2>
           <Sword className="w-5 h-5 text-rust-400" />
         </div>
 
