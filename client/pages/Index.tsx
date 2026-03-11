@@ -51,7 +51,7 @@ export default function Index() {
 
         {/* Play button */}
         <Link
-          to="/game"
+          to="/setup"
           className="mt-12 px-10 py-4 bg-gradient-to-r from-rust-500 to-rust-600 hover:from-rust-400 hover:to-rust-500 text-foreground font-bold text-lg rounded-sm transition-all duration-300 transform hover:scale-105 hover:shadow-lg shadow-rust-500/50 active:scale-95"
         >
           ENTER THE WASTELAND
