@@ -1,9 +1,10 @@
+import { ReactNode } from "react";
 import { Hammer, Plus } from "lucide-react";
 
 export interface CraftingRecipe {
   id: string;
   name: string;
-  icon?: string;
+  icon?: ReactNode;
   description?: string;
   ingredients: Array<{
     name: string;
@@ -53,15 +54,15 @@ export default function Crafting({ recipes, onCraft }: CraftingProps) {
                 {/* Recipe header */}
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex-1">
-                    <h4 className="font-bold text-foreground flex items-center gap-2">
-                      {recipe.icon && <span className="text-xl">{recipe.icon}</span>}
-                      {recipe.name}
+                    <div className="flex items-center gap-2 mb-1">
+                      {recipe.icon && <div className="text-foreground/70">{recipe.icon}</div>}
+                      <h4 className="font-bold text-foreground">{recipe.name}</h4>
                       {recipe.level && (
                         <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded ml-auto">
                           Lvl {recipe.level}
                         </span>
                       )}
-                    </h4>
+                    </div>
                     {recipe.description && (
                       <p className="text-xs text-muted-foreground mt-1">{recipe.description}</p>
                     )}

@@ -1,7 +1,9 @@
+import { ReactNode } from "react";
+
 interface Stat {
   label: string;
   value: string | number;
-  icon?: string;
+  icon?: ReactNode;
   color?: "rust" | "burnt" | "accent";
 }
 
@@ -34,9 +36,9 @@ export default function Header({ stats }: HeaderProps) {
             <div className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">
               {stat.label}
             </div>
-            <div className={`text-lg sm:text-xl font-bold ${getStatColor(stat.color)}`}>
-              {stat.icon && <span className="mr-1">{stat.icon}</span>}
-              {stat.value}
+            <div className={`text-lg sm:text-xl font-bold flex items-center gap-2 ${getStatColor(stat.color)}`}>
+              {stat.icon && <span className="flex-shrink-0">{stat.icon}</span>}
+              <span>{stat.value}</span>
             </div>
           </div>
         ))}

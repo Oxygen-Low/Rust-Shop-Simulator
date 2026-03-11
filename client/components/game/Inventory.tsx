@@ -1,10 +1,11 @@
+import { ReactNode } from "react";
 import { Package } from "lucide-react";
 
 export interface InventoryItem {
   id: string;
   name: string;
   quantity: number;
-  icon?: string;
+  icon?: ReactNode;
   rarity?: "common" | "uncommon" | "rare" | "legendary";
 }
 
@@ -81,7 +82,7 @@ export default function Inventory({ items, onItemClick }: InventoryProps) {
                       )}
                     </div>
                     {item.icon && (
-                      <div className="text-2xl flex-shrink-0">{item.icon}</div>
+                      <div className="flex-shrink-0 text-foreground/70">{item.icon}</div>
                     )}
                   </div>
                   <div className="text-xs text-muted-foreground">

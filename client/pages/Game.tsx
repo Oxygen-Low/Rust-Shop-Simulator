@@ -1,4 +1,20 @@
 import { useState } from "react";
+import {
+  Wrench,
+  Logs,
+  Shield,
+  AlertTriangle,
+  Box,
+  Radio,
+  Zap,
+  Coins,
+  BarChart3,
+  Heart,
+  Package,
+  Star,
+  Flame,
+  DoorOpen,
+} from "lucide-react";
 import GameLayout from "@/components/layout/GameLayout";
 import Header from "@/components/game/Header";
 import Inventory, { InventoryItem } from "@/components/game/Inventory";
@@ -11,42 +27,42 @@ export default function Game() {
       id: "1",
       name: "Metal Fragment",
       quantity: 45,
-      icon: "🔩",
+      icon: <Wrench className="w-6 h-6" />,
       rarity: "common",
     },
     {
       id: "2",
       name: "Scrap Wood",
       quantity: 128,
-      icon: "🪵",
+      icon: <Logs className="w-6 h-6" />,
       rarity: "common",
     },
     {
       id: "3",
       name: "Rad Suit",
       quantity: 3,
-      icon: "🥼",
+      icon: <Shield className="w-6 h-6" />,
       rarity: "uncommon",
     },
     {
       id: "4",
       name: "High Quality Metal",
       quantity: 12,
-      icon: "⚙️",
+      icon: <Zap className="w-6 h-6" />,
       rarity: "rare",
     },
     {
       id: "5",
       name: "Radiation",
       quantity: 5,
-      icon: "☢️",
+      icon: <AlertTriangle className="w-6 h-6" />,
       rarity: "rare",
     },
     {
       id: "6",
       name: "Supply Signal",
       quantity: 1,
-      icon: "📡",
+      icon: <Radio className="w-6 h-6" />,
       rarity: "legendary",
     },
   ]);
@@ -56,7 +72,7 @@ export default function Game() {
     {
       id: "r1",
       name: "Metal Door",
-      icon: "🚪",
+      icon: <DoorOpen className="w-6 h-6" />,
       description: "A sturdy metal door for your shop",
       ingredients: [
         { name: "Metal Fragment", quantity: 30 },
@@ -72,7 +88,7 @@ export default function Game() {
     {
       id: "r2",
       name: "Storage Box",
-      icon: "📦",
+      icon: <Box className="w-6 h-6" />,
       description: "Increase your inventory capacity",
       ingredients: [
         { name: "Scrap Wood", quantity: 50 },
@@ -88,7 +104,7 @@ export default function Game() {
     {
       id: "r3",
       name: "Furnace",
-      icon: "🔥",
+      icon: <Flame className="w-6 h-6" />,
       description: "Smelt ore into refined materials",
       ingredients: [
         { name: "Metal Fragment", quantity: 100 },
@@ -104,7 +120,7 @@ export default function Game() {
     {
       id: "r4",
       name: "Ammunition",
-      icon: "🔫",
+      icon: <Zap className="w-6 h-6" />,
       description: "Craft ammunition for defense",
       ingredients: [
         { name: "Metal Fragment", quantity: 20 },
@@ -120,12 +136,12 @@ export default function Game() {
 
   // Player stats
   const stats = [
-    { label: "Credits", value: "12,450", icon: "💰", color: "burnt" as const },
-    { label: "Level", value: "8", icon: "📊", color: "rust" as const },
-    { label: "Health", value: "85%", icon: "❤️", color: "accent" as const },
-    { label: "Radiation", value: "12%", icon: "☢️", color: "rust" as const },
-    { label: "Items", value: "194/200", icon: "📦", color: "burnt" as const },
-    { label: "Shop Rep", value: "S+", icon: "⭐", color: "accent" as const },
+    { label: "Credits", value: "12,450", icon: <Coins className="w-5 h-5" />, color: "burnt" as const },
+    { label: "Level", value: "8", icon: <BarChart3 className="w-5 h-5" />, color: "rust" as const },
+    { label: "Health", value: "85%", icon: <Heart className="w-5 h-5" />, color: "accent" as const },
+    { label: "Radiation", value: "12%", icon: <AlertTriangle className="w-5 h-5" />, color: "rust" as const },
+    { label: "Items", value: "194/200", icon: <Package className="w-5 h-5" />, color: "burnt" as const },
+    { label: "Shop Rep", value: "S+", icon: <Star className="w-5 h-5" />, color: "accent" as const },
   ];
 
   const handleItemClick = (item: InventoryItem) => {
