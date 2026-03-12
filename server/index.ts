@@ -1,10 +1,12 @@
 import "dotenv/config";
 import express from "express";
+import helmet from "helmet";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 
 export function createServer() {
   const app = express();
+  app.use(helmet());
 
   // Middleware
   app.use(cors());
