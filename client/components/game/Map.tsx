@@ -90,6 +90,26 @@ export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDele
     const canBuild = !building && selectedBuilding && isHovered &&
       (isEdgeBuilding ? cellIsEdge : !cellIsEdge);
 
+    // Edge cells always have blue background
+    if (cellIsEdge) {
+      if (building) {
+        return `${buildingConfig[building.type].color} border-2 ${
+          selectedBuildingId === building.id ? "border-accent" : "border-blue-400/50"
+        }`;
+      }
+
+      if (canBuild) {
+        return "bg-blue-500/40 border-2 border-accent";
+      }
+
+      if (isHovered && selectedBuilding && isEdgeBuilding) {
+        return "bg-blue-500/40 border-2 border-accent";
+      }
+
+      return "bg-blue-600/30 border border-blue-400/30 hover:border-blue-400/50";
+    }
+
+    // Interior cells
     if (building) {
       return `${buildingConfig[building.type].color} border-2 ${
         selectedBuildingId === building.id ? "border-accent" : "border-border/30"
@@ -100,11 +120,12 @@ export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDele
       return "bg-accent/30 border-2 border-accent";
     }
 
-    if (isHovered && selectedBuilding) {
-      const isValidPlacement = isEdgeBuilding ? cellIsEdge : !cellIsEdge;
-      if (!isValidPlacement) {
-        return "bg-destructive/20 border-2 border-destructive";
-      }
+    if (isHovered && selectedBuilding && !isEdgeBuilding) {
+      return "bg-accent/30 border-2 border-accent";
+    }
+
+    if (isHovered && selectedBuilding && isEdgeBuilding) {
+      return "bg-destructive/20 border-2 border-destructive";
     }
 
     return "bg-background/50 border border-border/20 hover:border-border/50";
