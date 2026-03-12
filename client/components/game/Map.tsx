@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Trash2 } from "lucide-react";
 
-export type BuildingType = "storage" | "furnace" | "turret";
+export type BuildingType = "storage" | "furnace" | "turret" | "shop_front" | "vending_machine";
 
 export interface Building {
   id: string;
@@ -19,10 +19,12 @@ interface MapProps {
 const GRID_SIZE = 12;
 const CELL_SIZE = 60;
 
-const buildingConfig: Record<BuildingType, { name: string; icon: string; color: string }> = {
+const buildingConfig: Record<BuildingType, { name: string; icon: string; color: string; isEdge?: boolean }> = {
   storage: { name: "Storage", icon: "📦", color: "bg-blue-900/40" },
   furnace: { name: "Furnace", icon: "🔥", color: "bg-orange-900/40" },
   turret: { name: "Turret", icon: "🎯", color: "bg-yellow-900/40" },
+  shop_front: { name: "Metal Shop Front", icon: "🏪", color: "bg-rust-900/40", isEdge: true },
+  vending_machine: { name: "Vending Machine", icon: "🤖", color: "bg-burnt-900/40", isEdge: true },
 };
 
 export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDelete }: MapProps) {
@@ -33,6 +35,10 @@ export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDele
   const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null);
   const [hoveredCell, setHoveredCell] = useState<{ x: number; y: number } | null>(null);
 
+  const isEdgeCell = (x: number, y: number) => {
+    return x === 0 || x === GRID_SIZE - 1 || y === 0 || y === GRID_SIZE - 1;
+  };
+
   const handleCellClick = useCallback(
     (x: number, y: number) => {
       if (!selectedBuilding) return;
@@ -40,6 +46,15 @@ export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDele
       // Check if cell is already occupied
       const occupied = buildings.some((b) => b.x === x && b.y === y);
       if (occupied) return;
+
+      const isEdgeBuilding = buildingConfig[selectedBuilding].isEdge;
+      const cellIsEdge = isEdgeCell(x, y);
+
+      // Check if edge buildings can only be placed on edges
+      if (isEdgeBuilding && !cellIsEdge) return;
+
+      // Check if non-edge buildings cannot be placed on edges
+      if (!isEdgeBuilding && cellIsEdge) return;
 
       // Add new building
       const newBuilding: Building = {
@@ -69,7 +84,11 @@ export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDele
   const getCellStyle = (x: number, y: number) => {
     const building = buildings.find((b) => b.x === x && b.y === y);
     const isHovered = hoveredCell?.x === x && hoveredCell?.y === y;
-    const canBuild = !building && selectedBuilding && isHovered;
+    const cellIsEdge = isEdgeCell(x, y);
+
+    const isEdgeBuilding = selectedBuilding ? buildingConfig[selectedBuilding].isEdge : false;
+    const canBuild = !building && selectedBuilding && isHovered &&
+      (isEdgeBuilding ? cellIsEdge : !cellIsEdge);
 
     if (building) {
       return `${buildingConfig[building.type].color} border-2 ${
@@ -79,6 +98,13 @@ export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDele
 
     if (canBuild) {
       return "bg-accent/30 border-2 border-accent";
+    }
+
+    if (isHovered && selectedBuilding) {
+      const isValidPlacement = isEdgeBuilding ? cellIsEdge : !cellIsEdge;
+      if (!isValidPlacement) {
+        return "bg-destructive/20 border-2 border-destructive";
+      }
     }
 
     return "bg-background/50 border border-border/20 hover:border-border/50";
@@ -93,7 +119,9 @@ export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDele
         </h3>
         <p className="text-xs text-muted-foreground mt-1">
           {selectedBuilding
-            ? `Placing ${buildingConfig[selectedBuilding].name}s - Click to place`
+            ? `Placing ${buildingConfig[selectedBuilding].name}s - Click to place ${
+                buildingConfig[selectedBuilding].isEdge ? "(edge only)" : "(interior only)"
+              }`
             : "Select a building type to start building"}
         </p>
       </div>

@@ -5,7 +5,7 @@ interface BuildingSelectorProps {
   onBuildingSelect: (building: BuildingType | null) => void;
 }
 
-const availableBuildings: Array<{
+const interiorBuildings: Array<{
   type: BuildingType;
   name: string;
   icon: string;
@@ -35,6 +35,29 @@ const availableBuildings: Array<{
   },
 ];
 
+const edgeBuildings: Array<{
+  type: BuildingType;
+  name: string;
+  icon: string;
+  description: string;
+  cost: { scrap: number; wood: number };
+}> = [
+  {
+    type: "shop_front",
+    name: "Metal Shop Front",
+    icon: "🏪",
+    description: "Direct trading + talking with NPCs",
+    cost: { scrap: 75, wood: 60 },
+  },
+  {
+    type: "vending_machine",
+    name: "Vending Machine",
+    icon: "🤖",
+    description: "Auto-sell items, needs refill & collection",
+    cost: { scrap: 85, wood: 50 },
+  },
+];
+
 export default function BuildingSelector({
   selectedBuilding,
   onBuildingSelect,
@@ -54,43 +77,88 @@ export default function BuildingSelector({
       </div>
 
       {/* Buildings list */}
-      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-2">
-        {availableBuildings.map((building) => (
-          <button
-            key={building.type}
-            onClick={() =>
-              onBuildingSelect(selectedBuilding === building.type ? null : building.type)
-            }
-            className={`w-full p-3 rounded-sm border-2 transition-all text-left group ${
-              selectedBuilding === building.type
-                ? "border-accent bg-accent/10"
-                : "border-border/50 bg-card/30 hover:border-border"
-            }`}
-          >
-            <div className="flex items-start justify-between gap-2 mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">{building.icon}</span>
-                <div>
-                  <h4 className="font-bold text-foreground">{building.name}</h4>
-                  <p className="text-xs text-muted-foreground">{building.description}</p>
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-4">
+        {/* Interior Buildings */}
+        <div className="space-y-2">
+          <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Interior</h4>
+          {interiorBuildings.map((building) => (
+            <button
+              key={building.type}
+              onClick={() =>
+                onBuildingSelect(selectedBuilding === building.type ? null : building.type)
+              }
+              className={`w-full p-3 rounded-sm border-2 transition-all text-left group ${
+                selectedBuilding === building.type
+                  ? "border-accent bg-accent/10"
+                  : "border-border/50 bg-card/30 hover:border-border"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{building.icon}</span>
+                  <div>
+                    <h4 className="font-bold text-foreground text-sm">{building.name}</h4>
+                    <p className="text-xs text-muted-foreground">{building.description}</p>
+                  </div>
                 </div>
+                {selectedBuilding === building.type && (
+                  <div className="w-3 h-3 bg-accent rounded-full flex-shrink-0 mt-1"></div>
+                )}
               </div>
-              {selectedBuilding === building.type && (
-                <div className="w-3 h-3 bg-accent rounded-full flex-shrink-0 mt-1"></div>
-              )}
-            </div>
 
-            {/* Cost */}
-            <div className="flex gap-3 text-xs text-muted-foreground">
-              <span className="bg-background/50 px-2 py-1 rounded">
-                Scrap: {building.cost.scrap}
-              </span>
-              <span className="bg-background/50 px-2 py-1 rounded">
-                Wood: {building.cost.wood}
-              </span>
-            </div>
-          </button>
-        ))}
+              {/* Cost */}
+              <div className="flex gap-3 text-xs text-muted-foreground">
+                <span className="bg-background/50 px-2 py-1 rounded">
+                  Scrap: {building.cost.scrap}
+                </span>
+                <span className="bg-background/50 px-2 py-1 rounded">
+                  Wood: {building.cost.wood}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Edge Buildings */}
+        <div className="space-y-2">
+          <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Edge/Storefront</h4>
+          {edgeBuildings.map((building) => (
+            <button
+              key={building.type}
+              onClick={() =>
+                onBuildingSelect(selectedBuilding === building.type ? null : building.type)
+              }
+              className={`w-full p-3 rounded-sm border-2 transition-all text-left group ${
+                selectedBuilding === building.type
+                  ? "border-rust-500 bg-rust-900/20"
+                  : "border-border/50 bg-card/30 hover:border-border"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{building.icon}</span>
+                  <div>
+                    <h4 className="font-bold text-foreground text-sm">{building.name}</h4>
+                    <p className="text-xs text-muted-foreground">{building.description}</p>
+                  </div>
+                </div>
+                {selectedBuilding === building.type && (
+                  <div className="w-3 h-3 bg-rust-400 rounded-full flex-shrink-0 mt-1"></div>
+                )}
+              </div>
+
+              {/* Cost */}
+              <div className="flex gap-3 text-xs text-muted-foreground">
+                <span className="bg-background/50 px-2 py-1 rounded">
+                  Scrap: {building.cost.scrap}
+                </span>
+                <span className="bg-background/50 px-2 py-1 rounded">
+                  Wood: {building.cost.wood}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
