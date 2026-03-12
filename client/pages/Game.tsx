@@ -19,6 +19,8 @@ import GameLayout from "@/components/layout/GameLayout";
 import Header from "@/components/game/Header";
 import Inventory, { InventoryItem } from "@/components/game/Inventory";
 import Crafting, { CraftingRecipe } from "@/components/game/Crafting";
+import Map, { BuildingType } from "@/components/game/Map";
+import BuildingSelector from "@/components/game/BuildingSelector";
 
 export default function Game() {
   // Get setup config from session storage
@@ -161,20 +163,87 @@ export default function Game() {
     console.log("Crafting:", recipe.name);
   };
 
+  // Game view mode state
+  const [selectedBuilding, setSelectedBuilding] = useState<BuildingType | null>(null);
+  const [gameView, setGameView] = useState<"map" | "management">("map");
+
   return (
     <GameLayout
       header={<Header stats={stats} />}
       shopName={gameSetup?.shopName || "RUST SHOP"}
     >
-      <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
-        {/* Left side - Inventory */}
-        <div className="border-r border-border/50 overflow-hidden">
-          <Inventory items={inventoryItems} onItemClick={handleItemClick} />
-        </div>
+      <div className="h-full flex overflow-hidden">
+        {gameView === "map" ? (
+          <>
+            {/* Map view - Building selector + Map */}
+            <div className="w-40 sm:w-48 border-r border-border/50 overflow-hidden hidden sm:flex flex-col bg-card/30">
+              <BuildingSelector
+                selectedBuilding={selectedBuilding}
+                onBuildingSelect={setSelectedBuilding}
+              />
+            </div>
 
-        {/* Right side - Crafting */}
-        <div className="overflow-hidden">
-          <Crafting recipes={recipes} onCraft={handleCraft} />
+            {/* Main map area */}
+            <div className="flex-1 overflow-hidden">
+              <Map selectedBuilding={selectedBuilding} />
+            </div>
+
+            {/* Mobile building selector - hidden on desktop */}
+            {selectedBuilding && (
+              <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border p-3 z-40">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-foreground">
+                    Placing {selectedBuilding.toUpperCase()}
+                  </span>
+                  <button
+                    onClick={() => setSelectedBuilding(null)}
+                    className="px-3 py-1 bg-muted hover:bg-muted/80 rounded text-xs font-semibold transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Management view - Inventory + Crafting */}
+            <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
+              {/* Left side - Inventory */}
+              <div className="border-r border-border/50 overflow-hidden">
+                <Inventory items={inventoryItems} onItemClick={handleItemClick} />
+              </div>
+
+              {/* Right side - Crafting */}
+              <div className="overflow-hidden">
+                <Crafting recipes={recipes} onCraft={handleCraft} />
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* View toggle - only on desktop */}
+        <div className="hidden sm:flex flex-col border-l border-border/50 w-32">
+          <button
+            onClick={() => setGameView("map")}
+            className={`flex-1 border-b border-border/50 transition-colors font-bold text-sm ${
+              gameView === "map"
+                ? "bg-rust-900/30 text-rust-400"
+                : "bg-card/50 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            MAP
+          </button>
+          <button
+            onClick={() => setGameView("management")}
+            className={`flex-1 transition-colors font-bold text-sm ${
+              gameView === "management"
+                ? "bg-burnt-900/30 text-burnt-400"
+                : "bg-card/50 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            MANAGE
+          </button>
         </div>
       </div>
     </GameLayout>
