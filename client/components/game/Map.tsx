@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Trash2 } from "lucide-react";
 
-export type BuildingType = "wall" | "storage" | "furnace" | "turret" | "door" | "floor";
+export type BuildingType = "storage" | "furnace" | "turret" | "door" | "floor";
 
 export interface Building {
   id: string;
@@ -20,7 +20,6 @@ const GRID_SIZE = 12;
 const CELL_SIZE = 60;
 
 const buildingConfig: Record<BuildingType, { name: string; icon: string; color: string }> = {
-  wall: { name: "Wall", icon: "🧱", color: "bg-red-900/40" },
   storage: { name: "Storage", icon: "📦", color: "bg-blue-900/40" },
   furnace: { name: "Furnace", icon: "🔥", color: "bg-orange-900/40" },
   turret: { name: "Turret", icon: "🎯", color: "bg-yellow-900/40" },
@@ -30,8 +29,8 @@ const buildingConfig: Record<BuildingType, { name: string; icon: string; color: 
 
 export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDelete }: MapProps) {
   const [buildings, setBuildings] = useState<Building[]>([
-    { id: "1", type: "wall", x: 0, y: 0 },
-    { id: "2", type: "wall", x: 1, y: 0 },
+    { id: "1", type: "floor", x: 0, y: 0 },
+    { id: "2", type: "floor", x: 1, y: 0 },
     { id: "3", type: "storage", x: 2, y: 2 },
     { id: "4", type: "furnace", x: 4, y: 3 },
   ]);

@@ -20,13 +20,6 @@ const availableBuildings: Array<{
     cost: { scrap: 5, wood: 10 },
   },
   {
-    type: "wall",
-    name: "Wall",
-    icon: "🧱",
-    description: "Protect your base from intruders",
-    cost: { scrap: 20, wood: 15 },
-  },
-  {
     type: "door",
     name: "Door",
     icon: "🚪",
