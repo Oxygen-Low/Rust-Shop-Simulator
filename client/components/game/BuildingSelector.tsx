@@ -13,20 +13,6 @@ const availableBuildings: Array<{
   cost: { scrap: number; wood: number };
 }> = [
   {
-    type: "floor",
-    name: "Floor",
-    icon: "▪️",
-    description: "Foundation for your base",
-    cost: { scrap: 5, wood: 10 },
-  },
-  {
-    type: "door",
-    name: "Door",
-    icon: "🚪",
-    description: "Controlled entry point",
-    cost: { scrap: 25, wood: 20 },
-  },
-  {
     type: "storage",
     name: "Storage",
     icon: "📦",

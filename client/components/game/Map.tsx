@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Trash2 } from "lucide-react";
 
-export type BuildingType = "storage" | "furnace" | "turret" | "door" | "floor";
+export type BuildingType = "storage" | "furnace" | "turret";
 
 export interface Building {
   id: string;
@@ -23,16 +23,12 @@ const buildingConfig: Record<BuildingType, { name: string; icon: string; color: 
   storage: { name: "Storage", icon: "📦", color: "bg-blue-900/40" },
   furnace: { name: "Furnace", icon: "🔥", color: "bg-orange-900/40" },
   turret: { name: "Turret", icon: "🎯", color: "bg-yellow-900/40" },
-  door: { name: "Door", icon: "🚪", color: "bg-green-900/40" },
-  floor: { name: "Floor", icon: "▪️", color: "bg-gray-700/40" },
 };
 
 export default function Map({ selectedBuilding, onBuildingSelect, onBuildingDelete }: MapProps) {
   const [buildings, setBuildings] = useState<Building[]>([
-    { id: "1", type: "floor", x: 0, y: 0 },
-    { id: "2", type: "floor", x: 1, y: 0 },
-    { id: "3", type: "storage", x: 2, y: 2 },
-    { id: "4", type: "furnace", x: 4, y: 3 },
+    { id: "1", type: "storage", x: 2, y: 2 },
+    { id: "2", type: "furnace", x: 4, y: 3 },
   ]);
   const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null);
   const [hoveredCell, setHoveredCell] = useState<{ x: number; y: number } | null>(null);
